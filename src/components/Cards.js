@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Card(props) {
+  const [picture, setPicture] = useState(null);
+
+  const fetchImage = async () => {
+    const res = await fetch("https://picsum.photos/200");
+    const imageBlob = await res.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    setPicture(imageObjectURL);
+  };
+
+  useEffect(() => {
+    fetchImage();
+  }, []);
+
   return (
     <div
       className="aspect-square m-8 text-lg font-bold border flex justify-center items-center"
       onClick={() => props.handleClick(props.id)}
     >
-      Card: {props.id}
+      <img src={picture}></img>
     </div>
   );
 }
